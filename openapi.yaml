@@ -1,570 +1,545 @@
-type: spec.insomnia.rest/5.0
-name: My Design Document
-meta:
-  id: wrk_85fb9c217c2547c38b2d7a5ad8c62d39
-  created: 1748669005923
-  modified: 1748669005923
-cookieJar:
-  name: Default Jar
-  meta:
-    id: jar_d18da94935a4d75e860724b83ee3c64109b122e8
-    created: 1748669005932
-    modified: 1748669005932
-environments:
-  name: Base Environment
-  meta:
-    id: env_d18da94935a4d75e860724b83ee3c64109b122e8
-    created: 1748669005928
-    modified: 1748669005928
-    isPrivate: false
-spec:
-  contents:
-    openapi: 3.0.0
-    info:
-      title: Course API
-      description: API for managing courses.
-      version: 1.0.0
-      contact:
-        email: support@example.com
-      license:
-        name: Apache 2.0
-        url: http://www.apache.org/licenses/LICENSE-2.0.html
-    servers:
-      - url: https://api.example.com/v1
-        description: Production server
-      - url: http://localhost:3000
-        description: Local development server
-    tags:
-      - name: course
-        description: Operations related to courses
-    paths:
-      /courses:
-        get:
-          tags:
-            - course
-          summary: get list of all courses
-          operationId: getCourseList
-          responses:
-            "200":
-              description: list of courses with all related models
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/Course"
-        post:
-          tags:
-            - course
-          summary: Add a new course
-          operationId: addCourse
-          requestBody:
-            $ref: "#/components/requestBodies/Course"
-          responses:
-            "201":
-              description: Course created successfully
-            "400":
-              description: Invalid input
-        put:
-          tags:
-            - course
-          summary: Update an existing course
-          operationId: updateCourse
-          requestBody:
-            $ref: "#/components/requestBodies/Course"
-          responses:
-            "200":
-              description: Course updated successfully
-            "400":
-              description: Invalid input
-            "404":
-              description: Course not found
-      /courses/{courseId}:
-        get:
-          tags:
-            - course
-          summary: Get course by ID
-          operationId: getCourseById
-          parameters:
-            - name: courseId
-              in: path
-              required: true
-              description: ID of the course
-              schema:
-                type: integer
-                format: int64
-          responses:
-            "200":
-              description: Successful operation
-              content:
-                application/json:
-                  schema:
-                    $ref: "#/components/schemas/Course"
-            "404":
-              description: Course not found
-        delete:
-          tags:
-            - course
-          summary: Delete course
-          operationId: deleteCourse
-          parameters:
-            - name: courseId
-              in: path
-              required: true
-              description: ID of the course to delete
-              schema:
-                type: integer
-                format: int64
-          responses:
-            "200":
-              description: Course deleted successfully
-            "404":
-              description: Course not found
-      /course_material:
-        post:
-          tags:
-            - course_material
-          summary: add course material
-          operationId: createCourseMaterial
-          requestBody:
-            $ref: "#/components/requestBodies/CourseMaterial"
-          responses:
-            "201":
-              description: Course material created successfully
-              content:
-                application/json:
-                  schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                        example: course material created successfully
-                      materials:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/CourseMaterial"
-    components:
-      requestBodies:
-        Course:
+openapi: 3.0.0
+info:
+  title: Course API
+  description: API for managing courses.
+  version: 1.0.0
+  contact:
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: http://localhost:3000
+    description: Local development server
+tags:
+  - name: course
+    description: Operations related to courses
+paths:
+  /courses:
+    get:
+      tags:
+        - course
+      summary: get list of all courses
+      operationId: getCourseList
+      responses:
+        "200":
+          description: list of courses with all related models
           content:
-            multipart/formdata:
+            application/json:
               schema:
-                $ref: "#/components/schemas/CourseRequest"
-          description: Course object
+                $ref: "#/components/schemas/Course"
+    post:
+      tags:
+        - course
+      summary: Add a new course
+      operationId: addCourse
+      requestBody:
+        $ref: "#/components/requestBodies/Course"
+      responses:
+        "201":
+          description: Course created successfully
+        "400":
+          description: Invalid input
+    put:
+      tags:
+        - course
+      summary: Update an existing course
+      operationId: updateCourse
+      requestBody:
+        $ref: "#/components/requestBodies/Course"
+      responses:
+        "200":
+          description: Course updated successfully
+        "400":
+          description: Invalid input
+        "404":
+          description: Course not found
+  /courses/{courseId}:
+    get:
+      tags:
+        - course
+      summary: Get course by ID
+      operationId: getCourseById
+      parameters:
+        - name: courseId
+          in: path
           required: true
-        CourseMaterial:
+          description: ID of the course
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+        "404":
+          description: Course not found
+    delete:
+      tags:
+        - course
+      summary: Delete course
+      operationId: deleteCourse
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          description: ID of the course to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Course deleted successfully
+        "404":
+          description: Course not found
+  /course_material:
+    post:
+      tags:
+        - course_material
+      summary: add course material
+      operationId: createCourseMaterial
+      requestBody:
+        $ref: "#/components/requestBodies/CourseMaterial"
+      responses:
+        "201":
+          description: Course material created successfully
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - course_id
-                  - materials
                 properties:
-                  course_id:
-                    type: integer
+                  message:
+                    type: string
+                    example: course material created successfully
                   materials:
                     type: array
                     items:
-                      $ref: "#/components/schemas/CourseMaterialRequest"
-          description: A list of course materials and associated course ID
-          required: true
-      schemas:
-        Category:
-          type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-            name:
-              type: string
-        CourseRequest:
-          type: object
-          required:
-            - title
-            - img_path
-            - content
-            - preview
-            - price
-            - level
-            - coaches
-          properties:
-            category_id:
-              type: integer
-            title:
-              type: string
-              example: English 101
-            content:
-              type: string
-              example: blank content
-            preview:
-              type: string
-              example: this is English 101
-            level:
-              type: string
-            price:
-              type: number
-            img_path:
-              type: string
-              format: binary
-            published:
-              type: boolean
-              description: Whether available to be enrolled into or not
-              default: false
-            offline:
-              type: boolean
-              description: whether course is at all available for enrollment or is only made
-                for purpose of issuing certificates
-              default: false
-            goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            coaches:
-              type: array
-              items:
-                $ref: "#/components/schemas/Coach"
-        CourseMaterialRequest:
-          type: object
-          required:
-            - lesson_code
-            - title
-            - content
-            - preview
-            - type
-            - id
-          properties:
-            type:
-              type: string
-              enum:
-                - video
-                - pdf
-                - quiz
-                - text
-            lesson_code:
-              example: eng-101-01
-              description: it is preferred that the code denotes the order of the lesson and
-                is easy to preserve, for the sake of preserving user progress
-                and statistical data
-            title:
-              type: string
-            content:
-              type: string
-            preview:
-              type: string
-            lesson_goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            id:
-              type: string
-              description: nullable if type is text
-        Course:
-          type: object
-          properties:
-            category:
-              type: string
-              example: intermediate language
-            title:
-              type: string
-              example: English 101
-            content:
-              type: string
-              example: blank content
-            preview:
-              type: string
-              example: this is English 101
-            level:
-              type: string
-            price:
-              type: number
-            img_path:
-              type: string
-              format: url
-            published:
-              type: boolean
-              description: Whether available to be enrolled into or not
-            offline:
-              type: boolean
-              description: whether course is at all available for enrollment or is only made
-                for purpose of issuing certificates
-            goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            coaches:
-              type: array
-              items:
-                $ref: "#/components/schemas/Coach"
-            materials:
-              type: array
-              items:
-                $ref: "#/components/schemas/CourseMaterial"
-            review_avg:
-              type: number
-            review_count:
-              type: number
-            enrollment_count:
-              type: number
-        CourseMaterial:
-          oneOf:
-            - $ref: "#/components/schemas/VideoMaterial"
-            - $ref: "#/components/schemas/TextMaterial"
-            - $ref: "#/components/schemas/PdfMaterial"
-            - $ref: "#/components/schemas/QuizMaterial"
-          discriminator:
-            propertyName: type
-            mapping:
-              video: "#/components/schemas/VideoMaterial"
-              text: "#/components/schemas/TextMaterial"
-              pdf: "#/components/schemas/PdfMaterial"
-              quiz: "#/components/schemas/QuizMaterial"
-        Goal:
-          type: object
-          required:
-            - content
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            goalable_id:
-              type: integer
-              readOnly: true
-            goalable_type:
-              type: string
-              enum:
-                - course
-                - lesson
-              readOnly: true
-            content:
-              type: string
-        Coach:
-          type: object
-          required:
-            - first_name
-            - last_name
-            - bio
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            first_name:
-              type: string
-            last_name:
-              type: string
-            bio:
-              type: string
-            slug:
-              type: string
-              readOnly: true
-            facebook_link:
-              type: string
-            instagramk_link:
-              type: string
-            youtube_link:
-              type: string
-            linkedin_link:
-              type: string
-        Enrollment:
-          type: object
-          required:
-            - user_id
-            - course_id
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            user_id:
-              type: integer
-            course_id:
-              type: integer
-            method:
-              type: string
-              enum:
-                - cash
-                - paypal
-                - mastercard
-              default: cash
-            status:
-              type: string
-              enum:
-                - pending
-                - approved
-                - disapproved
-                - cancelled
-              default: pending
-            created_at:
-              type: string
-              readOnly: true
-            updated_at:
-              type: string
-              readOnly: true
-        Review:
-          type: object
-          properties:
-            user_id:
-              type: integer
-            course_id:
-              type: integer
-            content:
-              type: string
-            rating:
-              type: number
-              minimum: 1
-              maximum: 5
-            created_at:
-              type: string
-              readOnly: true
-            updated_at:
-              type: string
-              readOnly: true
-        VideoMaterial:
-          type: object
-          required:
-            - id
-            - lesson_code
-            - title
-            - content
-            - preview
-            - type
-            - url
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            type:
-              type: string
-              enum:
-                - video
-            lesson_code:
-              example: eng-101-01
-              description: it is preferred that the code denotes the order of the lesson and
-                is easy to preserve, for the sake of preserving user progress
-                and statistical data
-            title:
-              type: string
-            content:
-              type: string
-            preview:
-              type: string
-            lesson_goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            url:
-              type: string
-              readOnly: true
-        PdfMaterial:
-          type: object
-          required:
-            - id
-            - lesson_code
-            - title
-            - content
-            - preview
-            - type
-            - url
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            type:
-              type: string
-              enum:
-                - pdf
-            lesson_code:
-              example: eng-101-01
-              description: it is preferred that the code denotes the order of the lesson and
-                is easy to preserve, for the sake of preserving user progress
-                and statistical data
-            title:
-              type: string
-            content:
-              type: string
-            preview:
-              type: string
-            lesson_goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            url:
-              type: string
-              readOnly: true
-        QuizMaterial:
-          type: object
-          required:
-            - code
-            - title
-            - content
-            - preview
-            - type
-            - questions
-          properties:
-            type:
-              type: string
-              enum:
-                - quiz
-            code:
-              type: string
-            title:
-              type: string
-            content:
-              type: string
-            preview:
-              type: string
-            goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-            questions:
-              type: array
-              items:
-                $ref: "#/components/schemas/Question"
-        TextMaterial:
-          type: object
-          required:
-            - code
-            - title
-            - content
-            - preview
-            - type
-          properties:
-            type:
-              type: string
-              enum:
-                - text
-            code:
-              type: string
-            title:
-              type: string
-            content:
-              type: string
-            preview:
-              type: string
-            goals:
-              type: array
-              items:
-                $ref: "#/components/schemas/Goal"
-        Question:
-          type: object
-          description: a read-only class that is generated from excel files on-demand
-          properties:
-            id:
-              type: integer
-            answer_id:
-              type: integer
-              description: the id of the correct answer
-            answers:
-              type: array
-              items:
-                $ref: "#/components/schemas/Answer"
-        Answer:
-          type: object
-          description: a read-only class that is generated on-demand from excel files
-          properties:
-            id:
-              type: integer
-            content:
-              type: string
-  meta:
-    id: spc_0da5eecb50ec407696c4d64927ab575a
-    created: 1748669033852
-    modified: 1748714537067
+                      $ref: "#/components/schemas/CourseMaterial"
+components:
+  requestBodies:
+    Course:
+      content:
+        multipart/formdata:
+          schema:
+            $ref: "#/components/schemas/CourseRequest"
+      description: Course object
+      required: true
+    CourseMaterial:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - course_id
+              - materials
+            properties:
+              course_id:
+                type: integer
+              materials:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CourseMaterialRequest"
+      description: A list of course materials and associated course ID
+      required: true
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    CourseRequest:
+      type: object
+      required:
+        - title
+        - img_path
+        - content
+        - preview
+        - price
+        - level
+        - coaches
+      properties:
+        category_id:
+          type: integer
+        title:
+          type: string
+          example: English 101
+        content:
+          type: string
+          example: blank content
+        preview:
+          type: string
+          example: this is English 101
+        level:
+          type: string
+        price:
+          type: number
+        img_path:
+          type: string
+          format: binary
+        published:
+          type: boolean
+          description: Whether available to be enrolled into or not
+          default: false
+        offline:
+          type: boolean
+          description: whether course is at all available for enrollment or is only made
+            for purpose of issuing certificates
+          default: false
+        goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        coaches:
+          type: array
+          items:
+            $ref: "#/components/schemas/Coach"
+    CourseMaterialRequest:
+      type: object
+      required:
+        - lesson_code
+        - title
+        - content
+        - preview
+        - type
+        - id
+      properties:
+        type:
+          type: string
+          enum:
+            - video
+            - pdf
+            - quiz
+            - text
+        lesson_code:
+          example: eng-101-01
+          description: it is preferred that the code denotes the order of the lesson and
+            is easy to preserve, for the sake of preserving user progress
+            and statistical data
+        title:
+          type: string
+        content:
+          type: string
+        preview:
+          type: string
+        lesson_goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        id:
+          type: string
+          description: nullable if type is text
+    Course:
+      type: object
+      properties:
+        category:
+          type: string
+          example: intermediate language
+        title:
+          type: string
+          example: English 101
+        content:
+          type: string
+          example: blank content
+        preview:
+          type: string
+          example: this is English 101
+        level:
+          type: string
+        price:
+          type: number
+        img_path:
+          type: string
+          format: url
+        published:
+          type: boolean
+          description: Whether available to be enrolled into or not
+        offline:
+          type: boolean
+          description: whether course is at all available for enrollment or is only made
+            for purpose of issuing certificates
+        goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        coaches:
+          type: array
+          items:
+            $ref: "#/components/schemas/Coach"
+        materials:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseMaterial"
+        review_avg:
+          type: number
+        review_count:
+          type: number
+        enrollment_count:
+          type: number
+    CourseMaterial:
+      oneOf:
+        - $ref: "#/components/schemas/VideoMaterial"
+        - $ref: "#/components/schemas/TextMaterial"
+        - $ref: "#/components/schemas/PdfMaterial"
+        - $ref: "#/components/schemas/QuizMaterial"
+      discriminator:
+        propertyName: type
+        mapping:
+          video: "#/components/schemas/VideoMaterial"
+          text: "#/components/schemas/TextMaterial"
+          pdf: "#/components/schemas/PdfMaterial"
+          quiz: "#/components/schemas/QuizMaterial"
+    Goal:
+      type: object
+      required:
+        - content
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        goalable_id:
+          type: integer
+          readOnly: true
+        goalable_type:
+          type: string
+          enum:
+            - course
+            - lesson
+          readOnly: true
+        content:
+          type: string
+    Coach:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - bio
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        bio:
+          type: string
+        slug:
+          type: string
+          readOnly: true
+        facebook_link:
+          type: string
+        instagramk_link:
+          type: string
+        youtube_link:
+          type: string
+        linkedin_link:
+          type: string
+    Enrollment:
+      type: object
+      required:
+        - user_id
+        - course_id
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        method:
+          type: string
+          enum:
+            - cash
+            - paypal
+            - mastercard
+          default: cash
+        status:
+          type: string
+          enum:
+            - pending
+            - approved
+            - disapproved
+            - cancelled
+          default: pending
+        created_at:
+          type: string
+          readOnly: true
+        updated_at:
+          type: string
+          readOnly: true
+    Review:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        content:
+          type: string
+        rating:
+          type: number
+          minimum: 1
+          maximum: 5
+        created_at:
+          type: string
+          readOnly: true
+        updated_at:
+          type: string
+          readOnly: true
+    VideoMaterial:
+      type: object
+      required:
+        - id
+        - lesson_code
+        - title
+        - content
+        - preview
+        - type
+        - url
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - video
+        lesson_code:
+          example: eng-101-01
+          description: it is preferred that the code denotes the order of the lesson and
+            is easy to preserve, for the sake of preserving user progress
+            and statistical data
+        title:
+          type: string
+        content:
+          type: string
+        preview:
+          type: string
+        lesson_goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        url:
+          type: string
+          readOnly: true
+    PdfMaterial:
+      type: object
+      required:
+        - id
+        - lesson_code
+        - title
+        - content
+        - preview
+        - type
+        - url
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - pdf
+        lesson_code:
+          example: eng-101-01
+          description: it is preferred that the code denotes the order of the lesson and
+            is easy to preserve, for the sake of preserving user progress
+            and statistical data
+        title:
+          type: string
+        content:
+          type: string
+        preview:
+          type: string
+        lesson_goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        url:
+          type: string
+          readOnly: true
+    QuizMaterial:
+      type: object
+      required:
+        - code
+        - title
+        - content
+        - preview
+        - type
+        - questions
+      properties:
+        type:
+          type: string
+          enum:
+            - quiz
+        code:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        preview:
+          type: string
+        goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+    TextMaterial:
+      type: object
+      required:
+        - code
+        - title
+        - content
+        - preview
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        code:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        preview:
+          type: string
+        goals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Goal"
+    Question:
+      type: object
+      description: a read-only class that is generated from excel files on-demand
+      properties:
+        id:
+          type: integer
+        answer_id:
+          type: integer
+          description: the id of the correct answer
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+    Answer:
+      type: object
+      description: a read-only class that is generated on-demand from excel files
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
